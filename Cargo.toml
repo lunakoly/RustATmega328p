@@ -1,18 +1,3 @@
-# rustup override set nightly-2021-01-07
-# https://dev.to/mikla/comment/1d386
-
-# Fun:
-# https://github.com/orgs/avr-rust/repositories
-
-# General:
-# https://book.avr-rust.com/005.4-choosing-an-io-library.html
-
-# Blink:
-# https://github.com/avr-rust/blink
-
-# Ruduino UART:
-# https://github.com/avr-rust/ruduino/blob/master/examples/uart.rs
-
 [package]
 name = "simple_test"
 version = "0.1.0"
@@ -22,45 +7,12 @@ edition = "2018"
 
 [dependencies]
 ruduino = "0.3"
-# libc = "0.2"
 
-# failed to unpack package `avr-libc v0.2.2`:
+# Error: failed to unpack package `avr-libc v0.2.2`
 # avr-libc = "0.2.2"
 
-# va_list = "0.1.3"
+# Seems, like it doesn't bring any benefits:
+# libc = "0.2"
 
-# https://github.com/avr-rust/blink/issues/25
-
-# [profile.dev]
-# [profile.release]
-# opt-level = "s"
-# debug = false
-# debug-assertions = false
-# overflow-checks = false
-# lto = false
-# panic = "abort"
-
-# https://users.rust-lang.org/t/solved-hello-world-no-std-build-problem/23122/4
-
-# [profile.dev]
-# # panic = "abort"
-# opt-level = "s"
-
-# [profile.release]
-# # panic = "abort"
-# opt-level = "s"
-
-# Other:
-# https://github.com/avr-rust/rust-legacy-fork/issues/149
-
-# https://github.com/avr-rust/blink/issues/25
-
-# [profile.dev]
-# opt-level = "s"
-# debug-assertions = false
-
-# [profile.release]
-# opt-level = "s"
-
-# About `no_std`:
-# https://github.com/rust-embedded/cortex-m-quickstart/issues/58
+# About stack unwinding:
+# https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html
