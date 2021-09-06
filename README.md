@@ -1,6 +1,6 @@
 # Small Embedded Rust How-To
 
-## Compiler version
+## Compiler Version
 
 Building for AVR requires a `nightly` toolchain.
 If the most recent `nightly` doesn't work, you [can use](https://dev.to/mikla/comment/1d386):
@@ -63,7 +63,19 @@ fn main(_argc: isize, _argv: *const *const u8) -> isize {
 
 Only the `release` build can be used for Proteus simulation right now. For some reason, `debug` doesn't even start.
 
-### Linking agains `stdout`
+### USART & Frequency Configuration
+
+The base clock frequency is set to 8MHz. ATmega328p has a built-in clock prescaler `CLKPR` that allows
+to further divide the frequency by a power of 2. By default it stores 3, so we manually set
+it to 0 in the `board::configure()` function.
+
+Apart from the prescaler, there is a separate build-in "by 8"-divider: `CKDIV8`. It turns out it's disabled
+by default.
+
+Funny fact: if we leave the `CLKPR` untouched, configure USART for _9 bits per character_, and
+*shift some characters forward by 0x40*, we'll still get the right message! Don't ask, how I found it out...
+
+### Linking Agains `stdout`
 
 I didn't find a way to link against:
 

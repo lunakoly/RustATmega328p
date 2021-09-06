@@ -4,6 +4,7 @@
 #![no_std]
 #![no_main]
 
+mod board;
 mod usart;
 
 extern "C" {
@@ -15,15 +16,15 @@ extern "C" {
 
 #[no_mangle]
 fn main() {
-    usart::configure();
+    board::configure();
 
-    for &b in b"[Data]\r\n\0" {
+    for &b in b"[Data]\r\n" {
         usart::transmit(b);
     }
 
     unsafe {
-        let stdout = usart::get_usart_c_stream();
-        fprintf(stdout, "Hi, I'm %d!\0".as_ptr() as *const i8, 21);
+        let stdout = usart::get_c_stream();
+        fprintf(stdout, "Hi, I'm %d!".as_ptr() as *const i8, 21);
     }
 
     loop {}
