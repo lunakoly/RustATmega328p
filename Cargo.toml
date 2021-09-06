@@ -16,3 +16,14 @@ ruduino = "0.3"
 
 # About stack unwinding:
 # https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html
+
+[profile.release]
+lto = true
+
+# We're stripping all the debug info anyways,
+# so panic recovery isn't possible anymore
+panic = "abort"
+
+# Seems like it optimizes out sequential writes to CLKPR,
+# breaking the register configuration procedure
+# opt-level = "z"
