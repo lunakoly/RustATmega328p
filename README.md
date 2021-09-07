@@ -87,10 +87,6 @@ extern "C" {
 
 Says, "unresolved reference", although there *must* be something functions like `printf()` rely on.
 
-### Absolute Path to the Linker
-
-Right now there's an absolute way to _my_ `avr-gcc` installation inside `avr-atmega328p.json`.
-
 ## Problems
 
 Build fails? Maybe this will help:
