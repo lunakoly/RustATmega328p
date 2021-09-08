@@ -3,9 +3,19 @@
 
 #![no_std]
 #![no_main]
+#![feature(lang_items)]
 
+mod atmega328p;
 mod board;
 mod usart;
+
+#[panic_handler]
+fn my_panic(_info: &core::panic::PanicInfo) -> ! {
+    loop {}
+}
+
+#[lang = "eh_personality"]
+extern "C" fn eh_personality() {}
 
 extern "C" {
     // Full avr-libc reference for looking up prototypes:
@@ -24,7 +34,7 @@ fn main() {
 
     unsafe {
         let stdout = usart::get_c_stream();
-        fprintf(stdout, "Hi, I'm %d!".as_ptr() as *const i8, 21);
+        fprintf(stdout, "3 + 2 = %d\0".as_ptr() as *const i8, 3 + 2);
     }
 
     loop {}

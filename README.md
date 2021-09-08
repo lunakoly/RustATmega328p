@@ -18,11 +18,10 @@ You can get it at this [microchip.com page](https://www.microchip.com/en-us/deve
 
 `avr-libc` is included, don't worry. You'll find it in the `avr` folder.
 
-## `ruduino`
+## `panic_handler` & `eh_personality`
 
-This project uses the `ruduino` crate to configure USART and access other ATmega328p registers if needed.
-
-Without `ruduino` [it's vital to add manual declarations](https://users.rust-lang.org/t/solved-hello-world-no-std-build-problem/23122/4) for the `panic_handler` and the `eh_personality`:
+This project used to utilize the `ruduino` crate to configure USART and access other ATmega328p registers,
+but after the removal [it became mandatory to add manual declarations](https://users.rust-lang.org/t/solved-hello-world-no-std-build-problem/23122/4) for the `panic_handler` and the `eh_personality`:
 
 ```rust
 #![feature(lang_items)]
@@ -35,6 +34,8 @@ fn my_panic(_info: &core::panic::PanicInfo) -> ! {
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
 ```
+
+Also, `ruduino` doesn't seem to compile with the latest `nightly`.
 
 ## Program Entry Point
 

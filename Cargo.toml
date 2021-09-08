@@ -6,7 +6,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ruduino = "0.3"
+# ruduino = "0.3"
 
 # Error: failed to unpack package `avr-libc v0.2.2`
 # avr-libc = "0.2.2"
@@ -26,4 +26,4 @@ panic = "abort"
 
 # Seems like it optimizes out sequential writes to CLKPR,
 # breaking the register configuration procedure
-# opt-level = "z"
+opt-level = "z"

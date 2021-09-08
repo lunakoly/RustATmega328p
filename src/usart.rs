@@ -1,4 +1,7 @@
 use crate::board;
+use crate::atmega328p;
+
+use core::ptr::{read_volatile, write_volatile};
 
 // `UBRR = f(BAUD)` formula, see 19.3.1:
 // https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf
@@ -7,16 +10,37 @@ use crate::board;
 // https://electronics.stackexchange.com/questions/50833/atmega8-usart-transmitting-wrong-data
 // https://electronics.stackexchange.com/questions/269658/serial-output-returns-wrong-ascii
 
-pub const OSCILLATOR_HZ: u32 = ruduino::config::CPU_FREQUENCY_HZ / (board::DIVISION_FACTOR as u32);
+pub const AVR_CPU_FREQUENCY_HZ: u32 = 8_000_000;
+pub const OSCILLATOR_HZ: u32 = AVR_CPU_FREQUENCY_HZ / (board::DIVISION_FACTOR as u32);
 pub const BAUD: u32 = 9600;
 pub const UBRR: u16 = (OSCILLATOR_HZ / 16 / BAUD - 1) as u16;
 
-pub fn transmit(symbol: u8) {
-    ruduino::legacy::serial::transmit(symbol);
+#[inline]
+pub fn ready_to_transmit() -> bool {
+    unsafe {
+        (read_volatile(atmega328p::UCSR0A) & atmega328p::UDRE0) != 0
+    }
 }
 
+#[inline]
+pub fn transmit(symbol: u8) {
+    while !ready_to_transmit() {}
+    unsafe {
+        write_volatile(atmega328p::UDR0, symbol);
+    }
+}
+
+#[inline]
+pub fn ready_to_receive() -> bool {
+    unsafe {
+        (read_volatile(atmega328p::UCSR0A) & atmega328p::RXC0) != 0
+    }
+}
+
+#[inline]
 pub fn receive() -> u8 {
-    ruduino::legacy::serial::receive()
+    while !ready_to_receive() {}
+    unsafe { read_volatile(atmega328p::UDR0) }
 }
 
 #[no_mangle]
@@ -40,12 +64,13 @@ extern "C" {
 }
 
 pub fn configure() {
-    ruduino::legacy::serial::Serial::new(UBRR)
-        .character_size(ruduino::legacy::serial::CharacterSize::EightBits)
-        .mode(ruduino::legacy::serial::Mode::Asynchronous)
-        .parity(ruduino::legacy::serial::Parity::Disabled)
-        .stop_bits(ruduino::legacy::serial::StopBits::OneBit)
-        .configure();
+    unsafe {
+        // Configure USART as "async transmitter 8N1"
+        write_volatile(atmega328p::UCSR0A, 0);
+        write_volatile(atmega328p::UCSR0B, atmega328p::TXEN0);
+        write_volatile(atmega328p::UCSR0C, atmega328p::UCSZ00 | atmega328p::UCSZ01);
+        write_volatile(atmega328p::UBRR0, UBRR);
+    }
 }
 
 pub unsafe fn get_c_stream() -> *mut u8 {
