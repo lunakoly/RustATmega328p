@@ -34,7 +34,26 @@ fn main() {
 
     unsafe {
         let stdout = usart::get_c_stream();
-        fprintf(stdout, "3 + 2 = %d\0".as_ptr() as *const i8, 3 + 2);
+
+        let a = 1;
+        let b = 2;
+        let c = 3;
+        let d = 4;
+
+        let pair1 = a + (b << 16);
+        let pair2 = c + (d << 16);
+
+        fprintf(stdout, "And let the numbers be: %d, %d, %d, %d\r\n\0".as_ptr() as *const i8, pair1, pair2);
+
+        let pi = 3.14159265f32;
+        let pi_parts = pi.to_le_bytes();
+        let new_pi =
+            ((pi_parts[0] as i32) << 0) +
+            ((pi_parts[1] as i32) << 8) +
+            ((pi_parts[2] as i32) << 16) +
+            ((pi_parts[3] as i32) << 24);
+
+        fprintf(stdout, "And pi = %f\r\n\0".as_ptr() as *const i8, new_pi);
     }
 
     loop {}

@@ -14,10 +14,10 @@
   "exe-suffix": ".elf",
   "eh-frame-header": false,
   "pre-link-args": {
-    "gcc": ["-mmcu=atmega328p"]
+    "gcc": ["-mmcu=atmega328p", "-Wl,-u,vfprintf"]
   },
   "late-link-args": {
-    "gcc": ["-lc", "-lgcc"]
+    "gcc": ["-lprintf_flt", "-lm", "-lc", "-lgcc"]
   },
   "target-c-int-width": "16",
   "target-endian": "little",
