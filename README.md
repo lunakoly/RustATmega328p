@@ -76,6 +76,43 @@ by default.
 Funny fact: if we leave the `CLKPR` untouched, configure USART for _9 bits per character_, and
 *shift some characters forward by 0x40*, we'll still get the right message! Don't ask, how I found it out...
 
+### C Variadics
+
+Calling C functions with variadic arguments (like `fprintf()`) causes some trouble: Rust passes arguments incorrecly.
+Consider the following weird example:
+
+```rust
+fprintf(stdout, "numbers: %d, %d, %d, %d, %d, %d, %d, %d\0".as_ptr() as *const i8, 1, 2, 3, 4);
+```
+
+This thing prints:
+
+```
+numbers: 1, 0, 2, 0, 3, 0, 4, 0
+```
+
+It seems like avr-libc's `fprintf()` parses the arguments as `i16`, even though Rust compiler forces
+us to provide exactly `i32` values (see: [E0617 error](https://doc.rust-lang.org/error-index.html#E0617)).
+For the same reason, it's impossible to pass `float`'s for now (or is it? 'cause I didn't find a way).
+
+The `args: core::ffi::VaList` approach didn't help as well (`vfprintf(stream, fmt, args.as_va_list())`).
+
+However, there IS a dirty hack:
+
+```rust
+let a = 1;
+let b = 2;
+let c = 3;
+let d = 4;
+
+let pair1 = a + (b << 16);
+let pair2 = c + (d << 16);
+
+fprintf(stdout, "And let the numbers be: %d, %d, %d, %d\0".as_ptr() as *const i8, pair1, pair2);
+```
+
+But it's a bit problematic with `float`'s, since Rust forbids such a direct cast.
+
 ### Linking Agains `stdout`
 
 I didn't find a way to link against:
@@ -88,9 +125,9 @@ extern "C" {
 
 Says, "unresolved reference", although there *must* be something functions like `printf()` rely on.
 
-## Problems
+## Questions? Answers?
 
-Build fails? Maybe this will help:
+Helping each other solve various problems is the key to success. Here're some links for you, maybe they'll help, idk:
 
 * https://github.com/avr-rust/blink/issues/25
 * https://github.com/avr-rust/rust-legacy-fork/issues/149
