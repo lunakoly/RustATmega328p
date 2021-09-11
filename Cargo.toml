@@ -17,6 +17,8 @@ edition = "2018"
 # About stack unwinding:
 # https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html
 
+avr_delay = "0.3"
+
 [profile.release]
 lto = true
 
