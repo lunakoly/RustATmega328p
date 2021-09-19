@@ -9,6 +9,7 @@ mod atmega328p;
 mod conversion;
 mod board;
 mod usart;
+mod devices;
 mod run;
 
 #[panic_handler]

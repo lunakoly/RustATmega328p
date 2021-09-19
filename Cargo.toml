@@ -26,6 +26,9 @@ avr_delay = "0.3"
 # the same way then
 avr-config = "2.0"
 
+# LCD management
+lcd = "0.3"
+
 [profile.release]
 lto = true
 

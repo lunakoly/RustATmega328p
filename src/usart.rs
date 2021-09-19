@@ -70,6 +70,10 @@ pub fn configure() {
         write_volatile(atmega328p::UCSR0C, atmega328p::UCSZ00 | atmega328p::UCSZ01);
         write_volatile(atmega328p::UBRR0, UBRR);
     }
+
+    for &it in b"Welcome to UART!\r\n" {
+        transmit(it);
+    }
 }
 
 pub unsafe fn get_c_stream() -> *mut u8 {

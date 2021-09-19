@@ -22,6 +22,13 @@ macro_rules! c_line {
     };
 }
 
+#[macro_export]
+macro_rules! c_string_receiver {
+    ( $buffer:expr ) => {
+        $buffer.as_mut_ptr() as *mut i8
+    };
+}
+
 pub trait C32Compatible {
     fn to_c(self) -> i32;
 }
