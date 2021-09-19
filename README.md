@@ -137,6 +137,12 @@ extern "C" {
 
 Says, "unresolved reference", although there *must* be something functions like `printf()` rely on.
 
+### Use of `_delay_ms()`
+
+I didn't find a way to make [AVR-GCC delay functions](https://www.nongnu.org/avr-libc/user-manual/group__util__delay.html) work: the linker says 'unresolved reference'.
+
+As a workaround, I added the `avr_delay` crate.
+
 ## Questions? Answers?
 
 Helping each other solve various problems is the key to success. Here're some links for you, maybe they'll help, idk:

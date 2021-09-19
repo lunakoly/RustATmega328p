@@ -3,5 +3,82 @@
 version = 3
 
 [[package]]
+name = "avr-config"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "abb2276df19ea0f25741658d218861b8a24d78eaf926127eb2384f0927f9ab9f"
+dependencies = [
+ "const_env--value",
+]
+
+[[package]]
+name = "avr_delay"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3240ca4376ed463b9636c8363dc9b6bc2a76f92f73c6ea52701c28fabf6ef7d7"
+dependencies = [
+ "avr-config",
+]
+
+[[package]]
+name = "const_env--value"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1ade503a5095050a5bf3feb8ae71842fb49dfc4af01dd613beb4f00bb7144645"
+dependencies = [
+ "const_env_impl--value",
+]
+
+[[package]]
+name = "const_env_impl--value"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a046e06596453266c54d3eb790813fd047494fc1d04d5077fba628bf84e1b83a"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "proc-macro2"
+version = "1.0.29"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b9f5105d4fdaab20335ca9565e106a5d9b82b6219b5ba735731124ac6711d23d"
+dependencies = [
+ "unicode-xid",
+]
+
+[[package]]
+name = "quote"
+version = "1.0.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c3d0b9745dc2debf507c8422de05d7226cc1f0644216dfdfead988f9b1ab32a7"
+dependencies = [
+ "proc-macro2",
+]
+
+[[package]]
 name = "simple_test"
 version = "0.1.0"
+dependencies = [
+ "avr-config",
+ "avr_delay",
+]
+
+[[package]]
+name = "syn"
+version = "1.0.76"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c6f107db402c2c2055242dbf4d2af0e69197202e9faacbef9571bbe47f5a1b84"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "unicode-xid",
+]
+
+[[package]]
+name = "unicode-xid"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ccb82d61f80a663efe1f787a51b16b5a51e3314d6ac365b08639f52387b33f3"

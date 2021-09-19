@@ -17,6 +17,15 @@ edition = "2018"
 # About stack unwinding:
 # https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html
 
+# For some reason, _delay_ms() doesn't work:
+# the linker says 'unresolved reference'.
+avr_delay = "0.3"
+
+# Used by avr_delay to fetch AVR_CPU_FREQUENCY_HZ.
+# We'll declare the frequency this way, and fetch it
+# the same way then
+avr-config = "2.0"
+
 [profile.release]
 lto = true
 

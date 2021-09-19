@@ -10,8 +10,7 @@ use core::ptr::{read_volatile, write_volatile};
 // https://electronics.stackexchange.com/questions/50833/atmega8-usart-transmitting-wrong-data
 // https://electronics.stackexchange.com/questions/269658/serial-output-returns-wrong-ascii
 
-pub const AVR_CPU_FREQUENCY_HZ: u32 = 8_000_000;
-pub const OSCILLATOR_HZ: u32 = AVR_CPU_FREQUENCY_HZ / (board::DIVISION_FACTOR as u32);
+pub const OSCILLATOR_HZ: u32 = avr_config::CPU_FREQUENCY_HZ / (board::DIVISION_FACTOR as u32);
 pub const BAUD: u32 = 9600;
 pub const UBRR: u16 = (OSCILLATOR_HZ / 16 / BAUD - 1) as u16;
 

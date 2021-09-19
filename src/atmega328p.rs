@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub const CLKPR: *mut u8 = 0x61 as *mut u8;
 pub const CLKPCE: u8 = 1 << 7;
 
@@ -15,3 +17,9 @@ pub const UCSZ00: u8 = 1 << 1;
 pub const UCSZ01: u8 = 1 << 2;
 
 pub const UBRR0: *mut u16 = 0xc4 as *mut u16;
+
+pub const PINB: *mut u8 = 0x23 as *mut u8;
+
+pub const DDRB: *mut u8 = 0x24 as *mut u8;
+
+pub const PORTB: *mut u8 = 0x25 as *mut u8;
