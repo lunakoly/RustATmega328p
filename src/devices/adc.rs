@@ -27,8 +27,6 @@ pub fn read(channel: u8) -> u16 {
             read_volatile(atmega328p::ADCSRA) | atmega328p::ADSC0
         );
 
-        // write_volatile(atmega328p::PRR, read_volatile(atmega328p::PRR) & !atmega328p::PRADC0);
-
         // Wait for the completion
         while !ready_to_read() {}
 
@@ -43,22 +41,6 @@ pub fn read(channel: u8) -> u16 {
 
 pub fn configure() {
     unsafe {
-        // // Analog Comparator initialization
-        // // Analog Comparator: Off
-        // // The Analog Comparator's positive input is
-        // // connected to the AIN0 pin
-        // // The Analog Comparator's negative input is
-        // // connected to the AIN1 pin
-        // write_volatile(
-        //     atmega328p::ACSR,
-        //     atmega328p::ACD0
-        // );
-
-        // write_volatile(
-        //     atmega328p::DIDR0,
-        //     read_volatile(atmega328p::DIDR0) | atmega328p::ADC0D0
-        // );
-
         // ADC initialization
         // ADC Clock frequency: 125,000 kHz
         // ADC Voltage Reference: AVCC pin
