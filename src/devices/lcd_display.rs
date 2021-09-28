@@ -76,19 +76,21 @@ impl Delay for HW {
 
 const HARDWARE: HW = HW {};
 
-pub fn configure() -> Display<'static, HW> {
+pub type TheDisplay = Display<'static, HW>;
+
+pub fn configure() -> TheDisplay {
     unsafe {
         // Port C initialization
-        // Bit3..Bit0=Out
-        write_volatile(atmega328p::DDRC, 0b00001111);
-        // Bit3..Bit0=1
-        write_volatile(atmega328p::DDRC, 0b00001111);
+        // Bit2..Bit0=Out
+        write_volatile(atmega328p::DDRC, read_volatile(atmega328p::DDRC) | 0b00000111);
+        // Bit2..Bit0=1
+        write_volatile(atmega328p::PORTC, read_volatile(atmega328p::PORTC) | 0b00000111);
 
         // Port D initialization
-        // Bit7..Bit0=Out
-        write_volatile(atmega328p::DDRC, 0b11111111);
-        // Bit7..Bit0=1
-        write_volatile(atmega328p::DDRC, 0b11111111);
+        // Bit7..Bit4=Out
+        write_volatile(atmega328p::DDRD, read_volatile(atmega328p::DDRC) | 0b11110000);
+        // Bit7..Bit4=1
+        write_volatile(atmega328p::PORTD, read_volatile(atmega328p::DDRC) | 0b11110000);
     }
 
     // Write-only

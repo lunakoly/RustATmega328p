@@ -85,7 +85,7 @@ pub fn configure() -> Keyboard {
         // Bit7..Bit4=In Bit3..Bit0=Out
         write_volatile(atmega328p::DDRB, 0b00001111);
         // Bit7..Bit4=T Bit3..Bit0=1
-        write_volatile(atmega328p::DDRB, 0b00001111);
+        write_volatile(atmega328p::PORTB, 0b00001111);
     }
 
     Keyboard {
