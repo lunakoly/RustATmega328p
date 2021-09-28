@@ -4,15 +4,15 @@ use crate::atmega328p;
 
 use core::ptr::{write_volatile, read_volatile};
 
-const COLUMN_0: u8 = 1 << 0;
-const COLUMN_1: u8 = 1 << 1;
-const COLUMN_2: u8 = 1 << 2;
-const COLUMN_3: u8 = 1 << 3;
+const COLUMN_0: u8 = 1 << 4;
+const COLUMN_1: u8 = 1 << 5;
+const COLUMN_2: u8 = 1 << 6;
+const COLUMN_3: u8 = 1 << 7;
 
-const ROW_0: u8 = 1 << 4;
-const ROW_1: u8 = 1 << 5;
-const ROW_2: u8 = 1 << 6;
-const ROW_3: u8 = 1 << 7;
+const ROW_0: u8 = 1 << 0;
+const ROW_1: u8 = 1 << 1;
+const ROW_2: u8 = 1 << 2;
+const ROW_3: u8 = 1 << 3;
 
 pub struct Keyboard {
     buttons: [bool; 16],
@@ -29,7 +29,7 @@ impl Keyboard {
         for index in 0..4 {
             avr_delay::delay_ms(6);
 
-            let zero_mask = (COLUMN_3 | COLUMN_2 | COLUMN_1 | COLUMN_0) ^ (1 << index);
+            let zero_mask = (ROW_3 | ROW_2 | ROW_1 | ROW_0) ^ (1 << index);
 
             let response = unsafe {
                 write_volatile(atmega328p::PORTB, zero_mask);
@@ -37,10 +37,12 @@ impl Keyboard {
                 read_volatile(atmega328p::PINB)
             };
 
-            self.buttons[0  + index] = response & ROW_3 == 0;
-            self.buttons[4  + index] = response & ROW_2 == 0;
-            self.buttons[8  + index] = response & ROW_1 == 0;
-            self.buttons[12 + index] = response & ROW_0 == 0;
+            let offset = 12 - 4 * index;
+
+            self.buttons[offset + 0] = response & COLUMN_0 == 0;
+            self.buttons[offset + 1] = response & COLUMN_1 == 0;
+            self.buttons[offset + 2] = response & COLUMN_2 == 0;
+            self.buttons[offset + 3] = response & COLUMN_3 == 0;
         }
     }
 
